@@ -3,40 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Blog | Archive</title>
+    <title>My Portfolio | Home</title>
     <!-- Importing Inter for headings and general info -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Link to our CSS - Note the relative path since we are in a subfolder -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Link to our CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
     <header>
-        <h1>Blog</h1>
-        <p class="description">me write about things sometimes. </p>
+        <h1>Jeetendra</h1>
+        <!-- Short description in Departure Mono -->
+        <p class="description">Physics | Computation | Optimistic fatalist</p>
     </header>
 
     <nav>
-        <a href="../index.html">Home</a>
-        <a href="index.html">Blog</a>
+        <a href="index.html">Home</a>
+        <a href="blog/index.html">Blog</a>
+        <a href="https://github.com/Jeetendraralur" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/jeetendraralur/" target="_blank">LinkedIn</a>
     </nav>
 
     <main>
-        <section id="posts">
-            <ul class="blog-list">
-                <!-- BLOG POST ITEM -->
+        <!-- Info Section -->
+        <section id="about">
+            <h2>About</h2>
+            <p class="description">me physics student curious about life and the world</p>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <h2>Projects</h2>
+            <ul class="project-list">
+                <!-- PROJECT ITEM -->
                 <li class="item">
                     <div class="item-header">
-                        <a href="posts/template.html" class="item-title">Hello World: Why I Started This Site</a>
-                        <span class="date">April 03, 2026</span>
+                        <a href="https://github.com/Jeetendraralur/edge-detection-fourier-optics-and-computational-imaging-" class="item-title">Real-time Computer Vision Edge Detection </a>
+                        <span class="date">2024</span>
                     </div>
-                    <!-- Excerpt in Departure Mono -->
-                    <p class="description">An introduction to this minimal space and what I hope to achieve with it. A journey into simplicity and personal digital space.</p>
+                    <!-- Description in Departure Mono -->
+                    <p class="description">Project done in submission for the fourier optics and computational imaging course.
+                        Implements multiple edge detection algos (sobel, prewitt, canny) on images and also provides a real time edge detection using a cam. 
+                    </p>
                 </li>
-                <!-- NEW POSTS GO HERE -->
+                <!-- PROJECT ITEM -->
+                <li class="item">
+                    <div class="item-header">
+                        <a href="https://github.com/Jeetendraralur/college-website-clone-django" class="item-title">College Website Clone (Django)</a>
+                        <span class="date">2023</span>
+                    </div>
+                    <p class="description">Project done in submission for a backend SEC course. Using django framework to build a clone of the college website and have a working admission portal. </p>
+                </li>
             </ul>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience">
+            <h2>Experience</h2>
+            <ul class="experience-list">
+                <!-- EXPERIENCE ITEM -->
+                <li class="item">
+                    <div class="item-header">
+                        <div class="item-title">Lead Developer @ TechCorp</div>
+                        <span class="date">2021 — Present</span>
+                    </div>
+                    <p class="description">Architecting scalable cloud infrastructure and leading a team of 10 developers on flagship product development.</p>
+                </li>
+                <!-- EXPERIENCE ITEM -->
+                <li class="item">
+                    <div class="item-header">
+                        <div class="item-title">Software Engineer @ StartupInc</div>
+                        <span class="date">2018 — 2021</span>
+                    </div>
+                    <p class="description">Developed core features for a fintech mobile app, improving performance by 40% and user retention by 15%.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- CV Section -->
+        <section id="cv">
+            <h2>CV</h2>
+            <p>Interested in my full resume? You can download the PDF version below.</p>
+            <a href="assets/cv.pdf" class="description" style="text-decoration: underline;">Download CV (PDF)</a>
         </section>
     </main>
 
