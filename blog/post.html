@@ -3,26 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Archive</title>
+    <title>Blog Post | Jeetendra</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Marked library for parsing markdown client-side -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
     <div id="header-container"></div>
     <div id="nav-container"></div>
 
-    <main>
-        <section id="posts">
-            <ul class="blog-list">
-                <!-- Dynamic blog list loaded by blog.js -->
-                <li class="item">
-                    <p class="description">Loading articles...</p>
-                </li>
-            </ul>
-        </section>
+    <main class="blog-post-content">
+        <article id="post-content">
+            <p class="description">Loading post...</p>
+        </article>
+        <a href="index.html" class="back-link">Back to Blog</a>
     </main>
 
     <div id="footer-container"></div>

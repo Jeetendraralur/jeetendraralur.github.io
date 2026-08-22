@@ -1,16 +1,18 @@
 /*
-  Minimalistic Personal Website Styles
-  Focus: Subtle, easy to edit, informative.
+  Minimalistic Personal Website Styles (Warm Paper Theme)
+  Focus: Subtle, tactile, easy to edit, interactive.
   Typography: Departure Mono for descriptions, Sans-serif for info/headings.
 */
 
 :root {
-  /* Colors */
-  --bg-color: #fafafa;
-  --text-color: #1a1a1a;
-  --text-muted: #666666;
-  --accent-color: #000000;
-  --border-color: #e5e5e5;
+  /* Warm Paper Light Mode Theme */
+  --bg-color: #fbf9f4;            /* Soft book-paper cream */
+  --text-color: #2d2a26;          /* Deep warm charcoal */
+  --text-muted: #706a60;          /* Warm stone gray */
+  --accent-color: #c45a30;        /* Terracotta/rust accent */
+  --border-color: #e5dfd3;        /* Warm card/line borders */
+  --card-bg: #f5f0e6;             /* Marginally darker paper for cards */
+  --sim-bg: #11100f;              /* Dark background for simulation contrast */
   
   /* Fonts */
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -22,7 +24,18 @@
   --spacing-lg: 44px;
 }
 
-/* @font-face for Departure Mono - Hosted via jsDelivr */
+/* Warm Paper Dark Mode Theme */
+html[data-theme="dark"] {
+  --bg-color: #161514;            /* Cozy warm charcoal/obsidian */
+  --text-color: #e8e4dc;          /* Soft warm white */
+  --text-muted: #968f83;          /* Warm slate gray */
+  --accent-color: #ff8c5a;        /* Glowing warm amber */
+  --border-color: #2c2b29;        /* Deep charcoal borders */
+  --card-bg: #1e1d1b;             /* Slightly lighter warm card background */
+  --sim-bg: #0b0a09;              /* Deep black-ink background for simulation */
+}
+
+/* @font-face for Departure Mono */
 @font-face {
   font-family: 'Departure Mono';
   src: url('https://cdn.jsdelivr.net/gh/rektdeckard/departure-mono@master/Fonts/DepartureMono-Regular.woff2') format('woff2');
@@ -35,6 +48,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
@@ -53,20 +67,47 @@ h1, h2, h3, h4 {
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
   letter-spacing: -0.02em;
+  color: var(--text-color);
 }
 
-h1 { font-size: 33px; line-height: 1.1; }
-h2 { font-size: 22px; margin-top: var(--spacing-lg); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
-h3 { font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
+h1 { 
+  font-size: 33px; 
+  line-height: 1.1; 
+}
+
+h2 { 
+  font-size: 22px; 
+  margin-top: var(--spacing-lg); 
+  border-bottom: 1px solid var(--border-color); 
+  padding-bottom: 5px; 
+}
+
+h3 { 
+  font-size: 11px; 
+  text-transform: uppercase; 
+  color: var(--text-muted); 
+  letter-spacing: 0.1em; 
+}
 
 p, li {
   margin-bottom: var(--spacing-sm);
 }
 
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
 /* The "Departure Mono" look for descriptions and technical details */
 .description, .mono-text, code, .date, .tag {
   font-family: var(--font-mono);
-  font-size: 11px; /* Optimal size for Departure Mono */
+  font-size: 11px;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
   font-smooth: never;
@@ -75,25 +116,67 @@ p, li {
   color: var(--text-muted);
 }
 
-/* Layout Elements */
-header {
+/* Navigation Bar */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
 }
 
-nav {
-  margin-bottom: var(--spacing-lg);
+.nav-links {
+  display: flex;
+  gap: var(--spacing-md);
 }
 
-nav a {
-  margin-right: var(--spacing-md);
+.nav-link {
   text-decoration: none;
   color: var(--text-color);
   font-weight: 500;
-  transition: opacity 0.2s;
+  transition: color 0.2s, opacity 0.2s;
 }
 
-nav a:hover {
-  opacity: 0.6;
+.nav-link:hover {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: var(--accent-color);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 8px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* Toggle Sun/Moon display */
+html[data-theme="light"] .sun-icon { display: none; }
+html[data-theme="light"] .moon-icon { display: block; }
+html[data-theme="dark"] .sun-icon { display: block; }
+html[data-theme="dark"] .moon-icon { display: none; }
+
+/* Layout Elements */
+header {
+  margin-bottom: var(--spacing-lg);
 }
 
 section {
@@ -101,12 +184,20 @@ section {
 }
 
 /* Lists and Grids */
-.project-list, .experience-list, .blog-list {
+.project-list, .interests-list, .blog-list {
   list-style: none;
 }
 
 .item {
   margin-bottom: var(--spacing-md);
+  padding: 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.item:hover {
+  background-color: var(--card-bg);
 }
 
 .item-header {
@@ -119,21 +210,55 @@ section {
 .item-title {
   font-weight: 600;
   font-size: 16px;
-  text-decoration: none;
   color: var(--text-color);
 }
 
 .item-title:hover {
-  text-decoration: underline;
+  color: var(--accent-color);
 }
+
+/* Background Canvas Simulation */
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  background-color: transparent;
+}
+
 
 /* Specific to Blog */
 .blog-post-content {
   margin-top: var(--spacing-lg);
 }
 
-.blog-post-content p {
+.markdown-body {
+  margin-top: var(--spacing-md);
+}
+
+.markdown-body p {
   margin-bottom: var(--spacing-md);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.markdown-body h2 {
+  margin-top: var(--spacing-lg);
+  font-size: 20px;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.markdown-body ul {
+  margin-left: 20px;
+  margin-bottom: var(--spacing-md);
+}
+
+.markdown-body li {
+  margin-bottom: 4px;
 }
 
 .back-link {
@@ -167,7 +292,14 @@ footer {
     flex-direction: column;
   }
   
-  .item-date {
-    margin-top: 4px;
+  .nav-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .theme-toggle {
+    align-self: flex-end;
+    margin-top: -30px;
   }
 }

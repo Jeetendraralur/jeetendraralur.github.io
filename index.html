@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio | Home</title>
+    <title>Jeetendra | Home</title>
     <link rel="icon" type="image/x-icon" href="assets/download.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,24 +12,15 @@
 </head>
 <body>
 
-    <header>
-        <h1>Jeetendra</h1>
-        <p class="description">Physics | Computation | Optimistic fatalist</p>
-    </header>
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="blog/index.html">Blog</a>
-        <a href="https://github.com/Jeetendraralur" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/jeetendraralur/" target="_blank">LinkedIn</a>
-        <a href="https://letterboxd.com/Jeetsu07/" target="_blank">letterboxd</a>
-    </nav>
+    <div id="header-container"></div>
+    <div id="nav-container"></div>
 
     <main>
         <section id="about">
             <h2>About</h2>
             <p class="description">me physics student curious about life and the world</p>
         </section>
+
 
         <section id="projects">
             <h2>Projects</h2>
@@ -59,13 +50,12 @@
                 <li class="item">
                     <div class="item-header">
                         <a href="https://music.youtube.com/watch?v=BXqPNlng6uI&si=43SkXFgbcbkqxWmK" target="_blank" class="item-title">Music </a>
-                        
                     </div>
                     <p class="description"> just love it, high fidelity baby.</p>
                 </li>
                 <li class="item">
                     <div class="item-header">
-                        <div class="item-title">Control systems</div>
+                        <div class="item-title" style="font-weight: 600; font-size: 16px;">Control Systems</div>
                     </div>
                     <p class="description">recently picked up interest in control systems. Non linearity of the world and its need to be understood and controlled is just so fascinating to me</p>
                 </li>
@@ -75,13 +65,19 @@
         <section id="cv">
             <h2>CV</h2>
             <p>Interested in my full resume? You can download the PDF version below.</p>
-            <a href="#" onclick="alert('in-process, welp!'); return false;" class="description" style="text-decoration: underline;">Download CV (PDF)</a>
+            <a href="#" id="cv-download-btn" class="description" style="text-decoration: underline;">Download CV (PDF)</a>
         </section>
     </main>
 
-    <footer>
-        <p class="description">&copy; 2026 Jeetendra R. Built with simplicity in mind cause im lazy.</p>
-    </footer>
+    <div id="footer-container"></div>
 
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.getElementById('cv-download-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('CV assembly in progress, stay tuned!');
+        });
+    </script>
 </body>
 </html>
