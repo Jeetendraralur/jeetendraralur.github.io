@@ -2,7 +2,7 @@
   {
     "id": "double-pendulum-chaos",
     "title": "Lagrangian Mechanics & Double Pendulum Chaos",
-    "date": "September 18, 2026",
+    "date": "September 15, 2026",
     "excerpt": "Exploring sensitivity to initial conditions, Euler-Lagrange equations, and phase space trajectories in double pendulum systems.",
     "file": "posts/double-pendulum-chaos.md"
   },
