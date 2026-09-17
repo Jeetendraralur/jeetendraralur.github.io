@@ -13,8 +13,12 @@
         resize();
         window.addEventListener('resize', resize);
 
-        // Simulation parameters
-        let g = 9.8;
+        // Determine base gravity based on current page environment
+        // Home page = Earth gravity (9.81 m/s²), Blog section = Moon gravity (1.62 m/s²)
+        const isBlogPage = window.location.pathname.includes('/blog/');
+        const baseG = isBlogPage ? 1.62 : 9.81;
+        let g = baseG;
+
         const damping = 0.00002;
 
         let l1 = Math.min(window.innerHeight * 0.22, 160);
@@ -22,9 +26,7 @@
         const m1 = 10;
         const m2 = 12;
 
-        // 3 pendulums — each gets a distinct visible warm color for both modes.
-        // Trail opacity is handled per-segment in the draw loop for a fading effect,
-        // so these are the full-opacity base colors.
+        // 3 pendulums — distinct warm colors for light and dark themes
         const pendulums = [
             {
                 a1: 2.2,
@@ -32,8 +34,7 @@
                 a1_v: 0.5,
                 a2_v: -0.2,
                 trail: [],
-                // Terracotta / rust
-                r: 196, g_c: 90, b: 48
+                r: 196, g_c: 90, b: 48 // Terracotta / rust
             },
             {
                 a1: 2.2,
@@ -41,8 +42,7 @@
                 a1_v: 0.5,
                 a2_v: -0.2,
                 trail: [],
-                // Sage green
-                r: 72, g_c: 130, b: 100
+                r: 72, g_c: 130, b: 100 // Sage green
             },
             {
                 a1: 2.2,
@@ -50,20 +50,43 @@
                 a1_v: 0.5,
                 a2_v: -0.2,
                 trail: [],
-                // Dusty blue / slate
-                r: 80, g_c: 120, b: 180
+                r: 80, g_c: 120, b: 180 // Dusty blue / slate
             }
         ];
 
         const maxTrailLength = 350;
 
-        // Scroll → gravity
+        // ── Scroll Velocity Acceleration ────────────────────────────────────
+        let lastScrollY = window.scrollY;
+        let lastScrollTime = performance.now();
+        let scrollVelocity = 0; // pixels per ms
+
         window.addEventListener('scroll', () => {
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            if (maxScroll <= 0) return;
-            const pct = window.scrollY / maxScroll;
-            g = 9.8 - pct * 15.8;
+            const now = performance.now();
+            const dtMs = Math.max(1, now - lastScrollTime);
+            const currentScrollY = window.scrollY;
+            const dist = Math.abs(currentScrollY - lastScrollY);
+            
+            const instantVel = dist / dtMs;
+            // Smoothly boost velocity
+            scrollVelocity = Math.max(scrollVelocity, instantVel);
+
+            lastScrollY = currentScrollY;
+            lastScrollTime = now;
         });
+
+        // ── Theme Switch Flare & Trail Dissolve ─────────────────────────────
+        let flareTimer = 0; // frames remaining for theme transition flare
+        const maxFlareFrames = 30;
+
+        const themeObserver = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if (mutation.attributeName === 'data-theme') {
+                    flareTimer = maxFlareFrames; // trigger flare & trail dissolve
+                }
+            });
+        });
+        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
         // Lagrangian equations of motion
         function getDerivatives(a1, a2, a1_v, a2_v) {
@@ -89,13 +112,20 @@
             l1 = Math.min(canvas.height * 0.22, 160);
             l2 = Math.min(canvas.height * 0.18, 130);
 
-            // Always centred, both desktop and mobile
+            // Always centred
             const pivotX = canvas.width * 0.5;
             const pivotY = canvas.height * 0.32;
 
-            // Physics — 10 substeps for numerical stability
+            // Decay scroll velocity smoothly back to zero
+            scrollVelocity *= 0.92;
+            if (scrollVelocity < 0.01) scrollVelocity = 0;
+
+            // Compute speed multiplier: normal 1.0x up to 3.5x based on scroll speed
+            const speedMultiplier = 1.0 + Math.min(scrollVelocity * 1.5, 2.5);
+
+            // Physics — 10 substeps scaled by scroll speed multiplier
             const subSteps = 10;
-            const dt = 0.04 / subSteps;
+            const dt = (0.04 * speedMultiplier) / subSteps;
             for (let s = 0; s < subSteps; s++) {
                 pendulums.forEach(p => {
                     const [a1, a2] = getDerivatives(p.a1, p.a2, p.a1_v, p.a2_v);
@@ -108,12 +138,28 @@
                 });
             }
 
+            // Theme switch flare handling
+            let flareAlphaBoost = 1.0;
+            if (flareTimer > 0) {
+                const progress = flareTimer / maxFlareFrames;
+                flareAlphaBoost = 1.0 + progress * 0.8; // temporary brightness flare
+                
+                // Rapidly dissolve older trail segments during transition
+                pendulums.forEach(p => {
+                    if (p.trail.length > 5) {
+                        p.trail.splice(0, Math.ceil(p.trail.length * 0.08));
+                    }
+                });
+
+                flareTimer--;
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Per-trail max opacity — higher in light mode so they actually show.
-            // Dark mode background is dark so they're naturally more visible.
-            const trailMaxAlpha = isDark ? 0.55 : 0.65;
-            const bobAlpha      = isDark ? 0.45 : 0.50;
+            // Per-trail max opacity
+            const baseMaxAlpha = isDark ? 0.55 : 0.65;
+            const trailMaxAlpha = Math.min(0.95, baseMaxAlpha * flareAlphaBoost);
+            const bobAlpha = isDark ? 0.45 : 0.50;
 
             // ── Draw fading trails ──────────────────────────────────────────────
             pendulums.forEach(p => {
@@ -128,16 +174,15 @@
                 const len = p.trail.length;
                 if (len < 2) return;
 
-                // Draw each segment with alpha proportional to its position in the trail
-                // (oldest = transparent, newest = trailMaxAlpha)
+                // Draw each segment with alpha proportional to position in trail
                 for (let i = 1; i < len; i++) {
-                    const progress = i / len;             // 0 → 1 (old → new)
+                    const progress = i / len; // 0 → 1
                     const alpha = progress * trailMaxAlpha;
                     ctx.beginPath();
                     ctx.moveTo(p.trail[i - 1].x, p.trail[i - 1].y);
                     ctx.lineTo(p.trail[i].x,     p.trail[i].y);
                     ctx.strokeStyle = `rgba(${p.r}, ${p.g_c}, ${p.b}, ${alpha.toFixed(3)})`;
-                    ctx.lineWidth = 1.2;
+                    ctx.lineWidth = flareTimer > 0 ? 1.6 : 1.2;
                     ctx.stroke();
                 }
             });
@@ -152,7 +197,6 @@
                 const rodColor = `rgba(${p.r}, ${p.g_c}, ${p.b}, ${bobAlpha * 0.5})`;
                 const bobColor = `rgba(${p.r}, ${p.g_c}, ${p.b}, ${bobAlpha})`;
 
-                // Rods (only draw for primary pendulum to avoid visual clutter)
                 if (idx === 0) {
                     ctx.beginPath();
                     ctx.moveTo(pivotX, pivotY);
@@ -163,7 +207,6 @@
                     ctx.stroke();
                 }
 
-                // Bobs
                 ctx.beginPath();
                 ctx.arc(x1, y1, idx === 0 ? 5 : 3, 0, 2 * Math.PI);
                 ctx.fillStyle = bobColor;

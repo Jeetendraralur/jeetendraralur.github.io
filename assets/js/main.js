@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (footerContainer) {
         footerContainer.innerHTML = `
             <footer>
-                <p class="description">&copy; 2026 Jeetendra R. Built with simplicity in mind.</p>
+                <p class="description"> I . . . a universe of atoms . . . an atom in the universe.</p>
             </footer>
         `;
     }

@@ -1,9 +1,16 @@
 [
   {
+    "id": "double-pendulum-chaos",
+    "title": "Lagrangian Mechanics & Double Pendulum Chaos",
+    "date": "September 18, 2026",
+    "excerpt": "Exploring sensitivity to initial conditions, Euler-Lagrange equations, and phase space trajectories in double pendulum systems.",
+    "file": "posts/double-pendulum-chaos.md"
+  },
+  {
     "id": "richard-feynman",
     "title": "The Value of Science — Richard Feynman",
     "date": "May 26, 2026",
-    "excerpt": "place and need of science in this so-called troubled world.",
+    "excerpt": "Place and need of science in this so-called troubled world.",
     "file": "posts/richard-feynman.md"
   }
 ]
